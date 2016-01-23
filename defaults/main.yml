@@ -1,0 +1,34 @@
+---
+
+openvpn_auth: "SHA512"
+openvpn_cipher: "AES-256-CBC"
+openvpn_client_to_client: no
+openvpn_comp_lzo: yes
+# If you have a crl in S3 enable this
+openvpn_crl_enabled: no
+openvpn_dev: tun
+openvpn_etcdir: /etc/openvpn
+openvpn_group: nogroup
+openvpn_host: "{{ inventory_hostname }}"
+openvpn_ifconfig_pool_persist: ipp.txt
+openvpn_keepalive: "10 120"
+openvpn_keydir: /etc/openvpn/keys
+openvpn_key_size: 2048
+openvpn_keys_s3_path: no
+openvpn_log: /var/log/openvpn.log
+openvpn_max_clients: 100
+openvpn_port: 1194
+openvpn_proto: udp
+openvpn_resolv_retry: infinite
+# Arbitrary lines for server config file
+openvpn_server_extra_options: []
+# Determines CIDR for VPN, eg.
+openvpn_server: "172.1.0.0 255.255.0.0"
+openvpn_status_log: openvpn-status.log
+# Used for source nat rules, eg.
+openvpn_subnet: "172.1.0.0/16"
+openvpn_tls_cipher: "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
+openvpn_tls_version_min: 1.2
+openvpn_user: nobody
+openvpn_verb: 3
+openvpn_version: "latest"

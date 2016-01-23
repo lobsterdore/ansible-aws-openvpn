@@ -1,0 +1,53 @@
+---
+
+- name: Create OpenVPN keys directory
+  sudo: yes
+  file:
+    path: "{{ openvpn_keydir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Download OpenVPN server keys
+  sudo: yes
+  command: "aws s3 cp {{ openvpn_keys_s3_path }}/{{ item }} {{ openvpn_keydir }}"
+  args:
+    creates: "{{ openvpn_keydir }}/{{ item }}"
+  with_items:
+    - ca.crt
+    - "dh{{ openvpn_key_size }}.pem"
+    - server.crt
+    - server.key
+  notify:
+    - restart openvpn
+
+- name: Download OpenVPN crl
+  sudo: yes
+  command: "aws s3 cp {{ openvpn_keys_s3_path }}/crl.pem {{ openvpn_etcdir }}"
+  notify:
+    - restart openvpn
+  when: openvpn_crl_enabled
+
+- name: Configure OpenVPN server
+  sudo: yes
+  template:
+    src: server.conf.j2
+    dest: "{{ openvpn_etcdir }}/server.conf"
+  notify:
+    - restart openvpn
+
+- name: Install OpenVPN NAT iptable rule
+  sudo: yes
+  command: "iptables -t nat -A POSTROUTING -s {{ openvpn_subnet }} -o eth0 -j MASQUERADE"
+  notify:
+    - save ip4tables
+
+- name: Enable OpenVPN network forwarding
+  sudo: yes
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    sysctl_file: /etc/sysctl.conf
+    reload: yes

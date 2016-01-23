@@ -1,0 +1,118 @@
+# {{ ansible_managed }}
+
+{% if openvpn_local is defined -%}
+local {{ openvpn_local }}
+{% endif %}
+
+port {{ openvpn_port }}
+
+proto {{ openvpn_proto }}
+
+{#
+"dev tun" will create a routed IP tunnel, "dev tap" will create an ethernet
+tunnel. Use "dev tap0" if you are ethernet bridging and have precreated a
+tap0 virtual interface and bridged it with your ethernet interface. If you
+want to control access policies over the VPN, you must create firewall rules
+for the the TUN/TAP interface. On non-Windows systems, you can give an
+explicit unit number, such as tun0. On Windows, use "dev-node" for this. On
+most systems, the VPN will not function unless you partially or fully disable
+the firewall for the TUN/TAP interface.
+#}
+dev {{ openvpn_dev }}
+
+ca {{ openvpn_keydir }}/ca.crt
+cert {{ openvpn_keydir }}/server.crt
+key {{ openvpn_keydir }}/server.key  # This file should be kept secret
+
+{% if openvpn_crl_enabled %}
+crl-verify {{ openvpn_etcdir }}/crl.pem
+{% endif %}
+
+tls-version-min {{ openvpn_tls_version_min }}
+tls-cipher {{ openvpn_tls_cipher }}
+cipher {{ openvpn_cipher }}
+auth {{ openvpn_auth }}
+
+{#
+Diffie hellman parameters. Generate your own with: openssl dhparam -out
+dh1024.pem 1024 Substitute 2048 for 1024 if you are using 2048 bit keys.
+#}
+dh {{ openvpn_keydir }}/dh{{ openvpn_key_size }}.pem
+
+{#
+Configure server mode and supply a VPN subnet for OpenVPN to draw client
+addresses from. The server will take 10.8.0.1 for itself, the rest will be
+made available to clients. Each client will be able to reach the server on
+10.8.0.1. Comment this line out if you are ethernet bridging. See the man
+page for more info.
+#}
+{% if openvpn_server %}
+server {{ openvpn_server }}
+{% endif %}
+
+{#
+Maintain a record of client <-> virtual IP address associations in this file.
+If OpenVPN goes down or is restarted, reconnecting clients can be assigned
+the same virtual IP address from the pool that was previously assigned.
+#}
+ifconfig-pool-persist {{ openvpn_ifconfig_pool_persist }}
+
+{#
+The keepalive directive causes ping-like messages to be sent back and forth
+over the link so that each side knows when the other side has gone down. Ping
+every 10 seconds, assume that remote peer is down if no ping received during
+a 120 second time period.
+#}
+keepalive {{ openvpn_keepalive }}
+
+{% if openvpn_comp_lzo -%}
+comp-lzo
+{% endif %}
+
+{#
+The persist options will try to avoid accessing certain resources on restart
+that may no longer be accessible because of the privilege downgrade.
+#}
+persist-key
+persist-tun
+
+status {{ openvpn_status_log }}
+
+{#
+By default, log messages will go to the syslog (or on Windows, if running as
+a service, they will go to the "\Program Files\OpenVPN\log" directory). Use
+log or log-append to override this default. "log" will truncate the log file
+on OpenVPN startup, while "log-append" will append to it.  Use one or the
+other (but not both).
+;log         openvpn_log
+#}
+log-append  {{ openvpn_log }}
+
+{#
+Set the appropriate level of log file verbosity.
+
+0 is silent, except for fatal errors 4 is reasonable for general usage 5 and
+6 can help to debug connection problems 9 is extremely verbose
+#}
+verb {{ openvpn_verb }}
+
+{# The maximum number of concurrently connected clients we want to allow. #}
+max-clients {{ openvpn_max_clients }}
+
+{% if openvpn_user -%}
+user {{ openvpn_user }}
+{% endif %}
+
+{% if openvpn_group -%}
+group {{ openvpn_group }}
+{% else -%}
+group nogroup
+{% endif %}
+
+{% if openvpn_client_to_client %}
+client-to-client
+{% endif %}
+
+{% for option in openvpn_openvpn_server_extra_options %}
+{{ option }}
+{% endfor %}

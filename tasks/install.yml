@@ -16,3 +16,22 @@
   sudo: yes
   apt:
     name: "openvpn={{ openvpn_version }}"
+
+- name: Create OpenVPN keys directory
+  sudo: yes
+  file:
+    path: "{{ openvpn_keydir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Enable OpenVPN network forwarding
+  sudo: yes
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    sysctl_file: /etc/sysctl.conf
+    reload: yes
+  when: openvpn_ipforwarding

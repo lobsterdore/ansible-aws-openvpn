@@ -1,24 +1,21 @@
 ---
 
 - name: Add OpenVPN gpg key
-  sudo: yes
   apt_key:
     url: https://swupdate.openvpn.net/repos/repo-public.gpg
     state: present
 
 - name: Install OpenVPN repo
-  sudo: yes
   apt_repository:
     repo: 'deb http://swupdate.openvpn.net/apt trusty main'
     state: present
 
 - name: Install OpenVPN
-  sudo: yes
   apt:
-    name: "openvpn={{ openvpn_version }}"
+    name: openvpn
+    state: installed
 
 - name: Create OpenVPN keys directory
-  sudo: yes
   file:
     path: "{{ openvpn_keydir }}"
     state: directory
@@ -27,7 +24,6 @@
     mode: 0600
 
 - name: Enable OpenVPN network forwarding
-  sudo: yes
   sysctl:
     name: net.ipv4.ip_forward
     value: 1

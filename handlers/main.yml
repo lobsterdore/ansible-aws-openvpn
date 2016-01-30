@@ -1,19 +1,16 @@
 ---
 
 - name: start openvpn
-  sudo: yes
   service:
     name: openvpn
     state: started
 
 - name: stop openvpn
-  sudo: yes
   service:
     name: openvpn
     state: stopped
 
 - name: restart openvpn
-  sudo: yes
   service:
     name: openvpn
     state: restarted

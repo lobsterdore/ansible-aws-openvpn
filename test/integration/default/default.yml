@@ -1,0 +1,8 @@
+---
+
+- name: Provision role
+  hosts: all
+
+  roles:
+    - role: ansible-aws-openvpn
+

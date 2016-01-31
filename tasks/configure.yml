@@ -26,6 +26,13 @@
   notify:
     - restart openvpn
 
+- name: Check for OpenVPN iptable rule
+  command: "iptables -t nat -C POSTROUTING -s {{ openvpn_snat_subnet }} -o eth0 -j MASQUERADE"
+  register: openvpn_snat_subnet_check
+  when: openvpn_snat_subnet
+  run_once: true
+
 - name: Install OpenVPN NAT iptable rule
   command: "iptables -t nat -A POSTROUTING -s {{ openvpn_snat_subnet }} -o eth0 -j MASQUERADE"
   when: openvpn_snat_subnet
+  run_once: true

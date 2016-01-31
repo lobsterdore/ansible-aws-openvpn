@@ -1,5 +1,20 @@
 ---
 
+- name: Install required packages
+  sudo: yes
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+  with_items:
+    - python-pip
+    - python-virtualenv
+
+- name: Install required pip packages
+  pip: "{{ item }}"
+  state: present
+  with_items:
+    - awscli
+
 - name: Add OpenVPN gpg key
   apt_key:
     url: https://swupdate.openvpn.net/repos/repo-public.gpg

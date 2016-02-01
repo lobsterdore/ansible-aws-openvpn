@@ -10,8 +10,9 @@
     - python-virtualenv
 
 - name: Install required pip packages
-  pip: "{{ item }}"
-  state: present
+  pip:
+    name: "{{ item }}"
+    state: present
   with_items:
     - awscli
 

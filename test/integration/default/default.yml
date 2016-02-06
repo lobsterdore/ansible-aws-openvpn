@@ -5,8 +5,10 @@
 
   pre_tasks:
     - name: Setup for tests
-      shell: "/bin/bash test/integration/default/setup.sh"
+      become: yes
+      shell: "/bin/bash /tmp/kitchen/setup.sh"
 
   roles:
     - role: ansible-aws-openvpn
+      become: yes
 

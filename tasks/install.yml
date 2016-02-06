@@ -1,7 +1,6 @@
 ---
 
 - name: Install required packages
-  sudo: yes
   apt:
     update_cache: yes
     name: "{{ item }}"

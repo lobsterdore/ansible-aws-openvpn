@@ -21,7 +21,7 @@ jclouds.filesystem.basedir=/tmp/s3proxy
 " > $HOME/s3proxy/s3props.conf
 
 mkdir -p /tmp/s3proxy/openvpn-test-bucket
-$HOME/s3proxy/target/s3proxy --properties $HOME/s3proxy/s3props.conf &
+$HOME/s3proxy/s3proxy --properties $HOME/s3proxy/s3props.conf &
 
 cd $HOME
 wget http://build.openvpn.net/downloads/releases/easy-rsa-2.2.0_master.tar.gz
@@ -40,7 +40,7 @@ export GREP=\"grep\"
 # This variable should point to
 # the openssl.cnf file included
 # with easy-rsa.
-export KEY_CONFIG=$EASY_RSA/openssl-1.0.0.cnf
+export KEY_CONFIG=\"$HOME/easy-rsa-2.2.0_master/easy-rsa/2.0/openssl-1.0.0.cnf\"
 
 # Edit this variable to point to
 # your soon-to-be-created key

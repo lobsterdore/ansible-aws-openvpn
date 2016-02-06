@@ -1,7 +1,7 @@
 ---
 
 - name: Download OpenVPN server keys
-  command: "aws s3 cp {{ aws_openvpn.s3_options }} {{ aws_openvpn.keys_s3_path }}/{{ item }} {{ aws_openvpn.keydir }}"
+  command: "aws s3 cp {{ aws_openvpn.s3_options }} {{ aws_openvpn.s3_path }}/{{ item }} {{ aws_openvpn.keydir }}"
   args:
     creates: "{{ aws_openvpn.keydir }}/{{ item }}"
   with_items:
@@ -13,10 +13,10 @@
     - restart openvpn
 
 - name: Download OpenVPN crl
-  command: "aws s3 cp {{ aws_openvpn.keys_s3_path }}/crl.pem {{ aws_openvpn.etcdir }}"
+  command: "aws s3 cp {{ aws_openvpn.s3_path }}/crl.pem {{ aws_openvpn.etcdir }}"
   notify:
     - restart openvpn
-  when: aws_openvpn.keys_s3_path and aws_openvpn.crl_enabled
+  when: aws_openvpn.crl_enabled
 
 - name: Configure OpenVPN server
   template:

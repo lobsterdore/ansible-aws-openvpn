@@ -10,6 +10,11 @@
     name: openvpn
     state: stopped
 
+- name: reload openvpn
+  service:
+    name: openvpn
+    state: reloaded
+
 - name: restart openvpn
   service:
     name: openvpn

@@ -33,7 +33,7 @@
 
 - name: Create OpenVPN keys directory
   file:
-    path: "{{ openvpn_keydir }}"
+    path: "{{ aws_openvpn.keydir }}"
     state: directory
     owner: root
     group: root
@@ -46,4 +46,4 @@
     state: present
     sysctl_file: /etc/sysctl.conf
     reload: yes
-  when: openvpn_ipforwarding
+  when: aws_openvpn.ipforwarding

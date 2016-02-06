@@ -3,6 +3,10 @@
 - name: Provision role
   hosts: all
 
+  pre_tasks:
+    - name: Setup for tests
+      shell: "/bin/bash test/integration/default/setup.sh"
+
   roles:
     - role: ansible-aws-openvpn
 

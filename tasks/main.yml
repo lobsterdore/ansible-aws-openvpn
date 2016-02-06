@@ -3,7 +3,7 @@
 - name: Install OpenVPN
   include: install.yml
   tags:
-    - install
+    - build
 
 - name: Configure OpenVPN
   include: configure.yml

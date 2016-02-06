@@ -1,56 +1,56 @@
 # {{ ansible_managed }}
 #jinja2:trim_blocks: False
 
-port {{ openvpn_port }}
-proto {{ openvpn_proto }}
-dev {{ openvpn_dev }}
+port {{ aws_openvpn.port }}
+proto {{ aws_openvpn.proto }}
+dev {{ aws_openvpn.dev }}
 
-ca {{ openvpn_keydir }}/ca.crt
-cert {{ openvpn_keydir }}/server.crt
-key {{ openvpn_keydir }}/server.key
-dh {{ openvpn_keydir }}/dh{{ openvpn_key_size }}.pem
+ca {{ aws_openvpn.keydir }}/ca.crt
+cert {{ aws_openvpn.keydir }}/server.crt
+key {{ aws_openvpn.keydir }}/server.key
+dh {{ aws_openvpn.keydir }}/dh{{ aws_openvpn.key_size }}.pem
 
 persist-key
 persist-tun
 
-{% if openvpn_crl_enabled %}
-crl-verify {{ openvpn_etcdir }}/crl.pem
+{% if aws_openvpn.crl_enabled %}
+crl-verify {{ aws_openvpn.etcdir }}/crl.pem
 {% endif %}
 
-tls-version-min {{ openvpn_tls_version_min }}
-tls-cipher {{ openvpn_tls_cipher }}
-cipher {{ openvpn_cipher }}
-auth {{ openvpn_auth }}
+tls-version-min {{ aws_openvpn.tls_version_min }}
+tls-cipher {{ aws_openvpn.tls_cipher }}
+cipher {{ aws_openvpn.cipher }}
+auth {{ aws_openvpn.auth }}
 
-{% if openvpn_server %}
-server {{ openvpn_server }}
+{% if aws_openvpn.server %}
+server {{ aws_openvpn.server }}
 {% endif %}
 
-ifconfig-pool-persist {{ openvpn_ifconfig_pool_persist }}
-keepalive {{ openvpn_keepalive }}
+ifconfig-pool-persist {{ aws_openvpn.ifconfig_pool_persist }}
+keepalive {{ aws_openvpn.keepalive }}
 
-{% if openvpn_comp_lzo -%}
+{% if aws_openvpn.comp_lzo -%}
 comp-lzo
 {% endif %}
 
-status {{ openvpn_status_log }}
-log-append  {{ openvpn_log }}
-verb {{ openvpn_verb }}
+status {{ aws_openvpn.status_log }}
+log-append  {{ aws_openvpn.log }}
+verb {{ aws_openvpn.verb }}
 
-{% if openvpn_user -%}
-user {{ openvpn_user }}
+{% if aws_openvpn.user -%}
+user {{ aws_openvpn.user }}
 {% endif %}
 
-{% if openvpn_group -%}
-group {{ openvpn_group }}
+{% if aws_openvpn.group -%}
+group {{ aws_openvpn.group }}
 {% else -%}
 group nogroup
 {% endif %}
 
-{% if openvpn_client_to_client %}
+{% if aws_openvpn.client_to_client %}
 client-to-client
 {% endif %}
 
-{% for option in openvpn_server_extra_options %}
+{% for option in aws_openvpn.server_extra_options %}
 {{ option }}
 {% endfor %}

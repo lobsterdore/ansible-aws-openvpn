@@ -7,6 +7,8 @@
     - name: Setup for tests
       become: yes
       shell: "/bin/bash /tmp/kitchen/setup.sh"
+      tags:
+        - kitchen
 
   roles:
     - role: ansible-aws-openvpn

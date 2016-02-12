@@ -25,13 +25,13 @@
   notify:
     - restart openvpn
 
-- name: Check for OpenVPN iptable rule
-  command: "iptables -t nat -C POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
-  register: aws_openvpn.snat_subnet_check
-  when: aws_openvpn.snat_subnet
-  run_once: true
+#- name: Check for OpenVPN iptable rule
+#  command: "iptables -t nat -C POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
+#  register: aws_openvpn.snat_subnet_check
+#  when: aws_openvpn.snat_subnet
+#  run_once: true
 
-- name: Install OpenVPN NAT iptable rule
-  command: "iptables -t nat -A POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
-  when: aws_openvpn.snat_subnet
-  run_once: true
+#- name: Install OpenVPN NAT iptable rule
+#  command: "iptables -t nat -A POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
+#  when: aws_openvpn.snat_subnet
+#  run_once: true

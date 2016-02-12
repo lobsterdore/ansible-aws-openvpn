@@ -24,9 +24,9 @@ script:
   - /bin/bash test/integration/default/setup.sh
   - echo localhost > inventory
   - ansible-playbook -i inventory --syntax-check test/integration/default/default.yml
-  - ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --skip-tags "kitchen" --extra-vars "{\"aws_openvpn\": { \"s3_path\": \"s3://openvpn-test-bucket\", \"s3_options\":\"--no-sign-request --endpoint-url http://localhost:8080 --no-verify-ssl\"}}"
+  - ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --skip-tags "kitchen"
   - >
-    ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --skip-tags "kitchen" --extra-vars "{\"aws_openvpn\": { \"s3_path\": \"s3://openvpn-test-bucket\", \"s3_options\": \"--no-sign-request --endpoint-url http://localhost:8080 --no-verify-ssl\"}}"
+    ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --skip-tags "kitchen"
     | grep -q 'changed=2.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)

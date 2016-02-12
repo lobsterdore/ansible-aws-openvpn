@@ -12,10 +12,6 @@ provisioner:
     - test/integration/default/setup.sh
   ansible_verbosity: 2
   ansible_verbose: true
-  extra_vars:
-    aws_openvpn:
-      s3_path: "s3://openvpn-test-bucket"
-      s3_options: "--no-sign-request --endpoint-url http://localhost:8080 --no-verify-ssl"
   tags:
     - kitchen
 

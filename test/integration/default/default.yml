@@ -3,7 +3,7 @@
 - name: Provision role
   hosts: all
 
-  pre_tasks:
+  tasks:
     - name: Setup for tests
       become: yes
       shell: "/bin/bash /tmp/kitchen/setup.sh"
@@ -13,4 +13,6 @@
   roles:
     - role: ansible-aws-openvpn
       become: yes
-
+      aws_openvpn:
+        s3_path: s3://openvpn-test-bucket
+        s3_options: '--no-sign-request --endpoint-url http://localhost:8080 --no-verify-ssl'

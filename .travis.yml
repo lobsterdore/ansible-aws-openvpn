@@ -24,9 +24,5 @@ script:
   - /bin/bash test/integration/default/setup.sh
   - echo localhost > inventory
   - ansible-playbook -i inventory --syntax-check test/integration/default/default.yml
-  - ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --skip-tags "kitchen"
-  - >
-    ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --skip-tags "kitchen"
-    | grep -q 'changed=2.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
+  - ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --tags "build"
+  - ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml --tags "configure"

@@ -3,7 +3,7 @@
 # Setup S3 proxy for testing key download
 
 apt-get install -y git python-pip openssl openjdk-7-jre
-pip install awscli
+pip install awscli --upgrade
 
 if [ ! -d "$HOME/s3proxy" ]; then
   mkdir -p $HOME/s3proxy

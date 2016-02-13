@@ -13,6 +13,8 @@ provisioner:
   ansible_verbosity: 2
   ansible_verbose: true
   tags:
+    - build
+    - configure
     - kitchen
 
 platforms:

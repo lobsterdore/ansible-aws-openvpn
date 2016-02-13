@@ -3,7 +3,7 @@
 - name: Provision role
   hosts: all
 
-  tasks:
+  pre_tasks:
     - name: Setup for tests
       become: yes
       shell: "/bin/bash /tmp/kitchen/setup.sh"

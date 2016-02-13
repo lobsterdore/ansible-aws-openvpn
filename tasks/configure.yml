@@ -1,6 +1,7 @@
 ---
 
 - name: Download OpenVPN server keys
+  become: yes
   command: "aws s3 cp {{ aws_openvpn.s3_options }} {{ aws_openvpn.s3_path }}/{{ item }} {{ aws_openvpn.keydir }}"
   args:
     creates: "{{ aws_openvpn.keydir }}/{{ item }}"
@@ -13,25 +14,30 @@
     - restart openvpn
 
 - name: Download OpenVPN crl
+  become: yes
   command: "aws s3 cp {{ aws_openvpn.s3_path }}/crl.pem {{ aws_openvpn.etcdir }}"
   notify:
     - restart openvpn
   when: aws_openvpn.crl_enabled
 
 - name: Configure OpenVPN server
+  become: yes
   template:
     src: server.conf.j2
     dest: "{{ aws_openvpn.etcdir }}/server.conf"
   notify:
     - restart openvpn
 
-#- name: Check for OpenVPN iptable rule
-#  command: "iptables -t nat -C POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
-#  register: aws_openvpn.snat_subnet_check
-#  when: aws_openvpn.snat_subnet
-#  run_once: true
+- name: Check for OpenVPN iptable rule
+  become: yes
+  command: "iptables -t nat -C POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
+  ignore_errors: yes
+  register: snat_subnet_check
+  when: aws_openvpn.snat_subnet
 
-#- name: Install OpenVPN NAT iptable rule
-#  command: "iptables -t nat -A POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
-#  when: aws_openvpn.snat_subnet
-#  run_once: true
+- name: Install OpenVPN NAT iptable rule
+  become: yes
+  command: "iptables -t nat -A POSTROUTING -s {{ aws_openvpn.snat_subnet }} -o eth0 -j MASQUERADE"
+  when: aws_openvpn.snat_subnet and snat_subnet_check.stderr != ''
+  notify:
+    - save iptables

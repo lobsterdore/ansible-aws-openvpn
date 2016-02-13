@@ -1,6 +1,6 @@
 ---
 
-aws_openvpn:
+openvpn:
   auth: "SHA512"
   cipher: "AES-256-CBC"
   client_to_client: no

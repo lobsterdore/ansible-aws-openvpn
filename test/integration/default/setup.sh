@@ -78,9 +78,9 @@ if [ ! -d "$HOME/openvpn/keys" ]; then
   export KEY_COUNTRY=\"GB\"
   export KEY_PROVINCE=\"London\"
   export KEY_CITY=\"London\"
-  export KEY_ORG=\"Sainsburys\"
-  export KEY_EMAIL=\"gs-devops@sainsburys.co.uk\"
-  export KEY_OU=\"Sainsburys Lab\"
+  export KEY_ORG=\"Lobsterdore\"
+  export KEY_EMAIL=\"dreed@techpunch.co.uk\"
+  export KEY_OU=\"Lobsterdore\"
 
   # X509 Subject Field
   export KEY_NAME=\"EasyRSA\"

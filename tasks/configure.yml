@@ -1,5 +1,17 @@
 ---
 
+- name: Gather AWS facts
+  action: ec2_facts
+  register: ec2_vars
+  when: "{{ openvpn.ec2_elastic_ip }}"
+
+- name: Associate Elastic IP
+  ec2_eip:
+    instance_id: "{{ ansible_ec2_instance_id }}"
+    ip: "{{ openvpn.ec2_elastic_ip }}"
+    region: "{{ openvpn.aws_region }}"
+  when: "{{ openvpn.ec2_elastic_ip }}"
+
 - name: Download OpenVPN server keys
   become: yes
   command: "aws s3 cp {{ openvpn.s3_options }} {{ openvpn.s3_path }}/{{ item }} {{ openvpn.keydir }}"

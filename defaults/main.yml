@@ -2,12 +2,15 @@
 
 openvpn:
   auth: "SHA512"
+  aws_region: "eu-west-1"
   cipher: "AES-256-CBC"
   client_to_client: no
   comp_lzo: yes
   # If you have a crl in S3 enable this
   crl_enabled: no
   dev: tun
+  # Allows for a static EIP
+  ec2_elastic_ip: no
   etcdir: /etc/openvpn
   group: nogroup
   host: "{{ inventory_hostname }}"

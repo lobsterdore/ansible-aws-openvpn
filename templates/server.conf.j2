@@ -51,6 +51,10 @@ group nogroup
 client-to-client
 {% endif %}
 
+{% if openvpn.subnet_add_route %}
+push "route {{ openvpn.subnet_bastion }} 255.255.0.0"
+{% endif %}
+
 {% for option in openvpn.server_extra_options %}
 {{ option }}
 {% endfor %}

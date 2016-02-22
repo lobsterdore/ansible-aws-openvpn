@@ -2,6 +2,7 @@
 
 # Setup S3 proxy for testing key download
 
+apt-get update
 apt-get install -y git python-pip openssl openjdk-7-jre
 pip install awscli --upgrade
 

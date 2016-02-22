@@ -8,7 +8,7 @@
       become: yes
       shell: "/bin/bash /tmp/kitchen/setup.sh"
       tags:
-        - kitchen
+        - setup
 
   roles:
     - role: ansible-aws-openvpn

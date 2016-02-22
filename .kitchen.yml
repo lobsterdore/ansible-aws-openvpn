@@ -15,7 +15,7 @@ provisioner:
   tags:
     - build
     - configure
-    - kitchen
+    - setup
 
 platforms:
 - name: ubuntu-14.04

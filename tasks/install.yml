@@ -18,10 +18,18 @@
   with_items:
     - awscli
 
-- name: Add OpenVPN gpg key
+- name: Add OpenVPN GPG key
   become: yes
   apt_key:
-    url: https://swupdate.openvpn.net/repos/repo-public.gpg
+    id: 8E6DA8B4E158C569
+    keyserver: hkps.pool.sks-keyservers.net
+    #url: https://swupdate.openvpn.net/repos/repo-public.gpg
+    state: present
+
+- name: Install OpenVPN repo
+  become: yes
+  apt_repository:
+    repo: 'deb http://swupdate.openvpn.net/apt trusty main'
     state: present
 
 - name: Install OpenVPN repo

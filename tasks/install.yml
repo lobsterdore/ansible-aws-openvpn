@@ -23,19 +23,12 @@
   apt_key:
     id: 8E6DA8B4E158C569
     keyserver: hkps.pool.sks-keyservers.net
-    #url: https://swupdate.openvpn.net/repos/repo-public.gpg
     state: present
 
 - name: Install OpenVPN repo
   become: yes
   apt_repository:
-    repo: 'deb http://swupdate.openvpn.net/apt trusty main'
-    state: present
-
-- name: Install OpenVPN repo
-  become: yes
-  apt_repository:
-    repo: 'deb http://swupdate.openvpn.net/apt trusty main'
+    repo: 'deb http://build.openvpn.net/debian/openvpn/stable trusty main'
     state: present
 
 - name: Install OpenVPN

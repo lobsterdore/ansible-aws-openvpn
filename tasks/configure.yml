@@ -1,16 +1,34 @@
 ---
 
-- name: Gather AWS facts
-  action: ec2_facts
+- name: Check if in AWS
+  uri:
+    url: http://169.254.169.254/latest/meta-data
+  register: openvpn_aws_uri_check
+  failed_when: no
+  when:
+    - openvpn.aws_ec2_elastic_ip
+
+- name: Set openvpn_inside_aws Fact
+  set_fact:
+    openvpn_inside_aws: "{{ openvpn_aws_uri_check.status == 200 }}"
+  when:
+    - openvpn.aws_ec2_elastic_ip
+
+- name: EC2 fact hunt
+  action: ec2_metadata_facts
   register: ec2_vars
-  when: openvpn.aws_ec2_elastic_ip
+  when:
+    - openvpn_inside_aws == true
+    - openvpn.aws_ec2_elastic_ip
 
 - name: Associate Elastic IP
   ec2_eip:
     instance_id: "{{ ansible_ec2_instance_id }}"
     ip: "{{ openvpn.aws_ec2_elastic_ip }}"
     region: "{{ openvpn.aws_region }}"
-  when: openvpn.aws_ec2_elastic_ip
+  when:
+    - openvpn_inside_aws == true
+    - openvpn.aws_ec2_elastic_ip
 
 - name: Download OpenVPN server keys
   become: yes
